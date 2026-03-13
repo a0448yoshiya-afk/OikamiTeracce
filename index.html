@@ -442,75 +442,36 @@
                 btn.classList.remove('active');
             });
 
-            var targetPage = document.getElementById('page-' + pageId);
-            var targetBtn = document.getElementById('btn-' + pageId);
+           var form = document.getElementById('booking-form');
+var successBox = document.getElementById('booking-success');
 
-            if (targetPage) {
-                targetPage.classList.add('active');
+if (form) {
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        var sendData = new URLSearchParams();
+        sendData.append('name', form.querySelector('[name="お名前"]').value);
+        sendData.append('email', form.querySelector('[name="メールアドレス"]').value);
+        sendData.append('people', form.querySelector('[name="人数"]').value);
+        sendData.append('message', form.querySelector('[name="メッセージ"]').value);
+
+        try {
+            await fetch('https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec', {
+                method: 'POST',
+                body: sendData,
+                mode: 'no-cors'
+            });
+
+            form.classList.add('hidden');
+            if (successBox) {
+                successBox.classList.remove('hidden');
             }
-
-            if (targetBtn) {
-                targetBtn.classList.add('active');
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (error) {
+            console.error(error);
+            alert('送信エラーが発生しました');
         }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var navButtons = document.querySelectorAll('.nav-btn');
-            navButtons.forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    var pageId = btn.getAttribute('data-page');
-                    switchPage(pageId);
-                });
-            });
-
-            var jumpButtons = document.querySelectorAll('.page-jump');
-            jumpButtons.forEach(function (btn) {
-                btn.addEventListener('click', function () {
-                    var pageId = btn.getAttribute('data-page');
-                    switchPage(pageId);
-                });
-            });
-
-            var form = document.getElementById('booking-form');
-            var successBox = document.getElementById('booking-success');
-
-            if (form) {
-                form.addEventListener('submit', async function (e) {
-                    e.preventDefault();
-
-                    var formData = new FormData(form);
-                    var data = {
-                        name: formData.get('お名前'),
-                        email: formData.get('メールアドレス'),
-                        people: formData.get('人数'),
-                        message: formData.get('メッセージ')
-                    };
-
-                    try {
-                        var response = await fetch('https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        });
-
-                        if (response.ok) {
-                            form.classList.add('hidden');
-                            if (successBox) {
-                                successBox.classList.remove('hidden');
-                            }
-                        } else {
-                            alert('送信に失敗しました');
-                        }
-                    } catch (error) {
-                        console.error(error);
-                        alert('送信エラーが発生しました');
-                    }
-                });
-            }
+    });
+}
 
             var container = document.getElementById('calendar-days');
             if (container) {
