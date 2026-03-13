@@ -442,8 +442,36 @@
                 btn.classList.remove('active');
             });
 
-           var form = document.getElementById('booking-form');
+         var form = document.getElementById('booking-form');
 var successBox = document.getElementById('booking-success');
+
+if (form) {
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        var sendData = new URLSearchParams();
+        sendData.append('name', form.querySelector('[name="お名前"]').value);
+        sendData.append('email', form.querySelector('[name="メールアドレス"]').value);
+        sendData.append('people', form.querySelector('[name="人数"]').value);
+        sendData.append('message', form.querySelector('[name="メッセージ"]').value);
+
+        try {
+            await fetch('https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec', {
+                method: 'POST',
+                body: sendData,
+                mode: 'no-cors'
+            });
+
+            form.classList.add('hidden');
+            if (successBox) {
+                successBox.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('送信エラーが発生しました');
+        }
+    });
+}
 
 if (form) {
     form.addEventListener('submit', async function (e) {
