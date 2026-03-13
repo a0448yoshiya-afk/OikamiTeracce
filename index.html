@@ -332,19 +332,38 @@
                     <h2 class="text-4xl font-light tracking-widest">事前予約</h2>
                 </header>
                 <div class="bg-white p-10 border border-stone-100">
-                    <form id="booking-form" class="space-y-6">
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">お名前</label>
-                            <input type="text" name="name" required class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メールアドレス</label>
-                            <input type="email" name="email" required class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
-                        </div>
-                        <button type="submit" id="submit-booking" class="w-full bg-black text-white py-5 text-[10px] tracking-[0.3em] uppercase hover:bg-stone-800 transition-all">
-                            予約をリクエストする
-                        </button>
-                    </form>
+                    <form action="mailto:a0448yoshiya@gmail.com" method="post" enctype="text/plain" class="space-y-6">
+
+    <div>
+        <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">お名前</label>
+        <input type="text" name="お名前" required
+        class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
+    </div>
+
+    <div>
+        <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メールアドレス</label>
+        <input type="email" name="メールアドレス" required
+        class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
+    </div>
+
+    <div>
+        <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">人数</label>
+        <input type="number" name="人数"
+        class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
+    </div>
+
+    <div>
+        <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メッセージ</label>
+        <textarea name="メッセージ" rows="4"
+        class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent"></textarea>
+    </div>
+
+    <button type="submit"
+    class="w-full bg-black text-white py-5 text-[10px] tracking-[0.3em] uppercase hover:bg-stone-800 transition-all">
+        予約メールを送信
+    </button>
+
+</form>
                     <div id="booking-success" class="hidden text-center py-10">
                         <h4 class="text-lg font-light">送信完了しました</h4>
                     </div>
@@ -412,6 +431,7 @@
 </script>
 </body>
 </html>
+
 
 
 
