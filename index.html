@@ -398,10 +398,39 @@
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('booking-form');
         if (form) {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        const data = {
+            name: formData.get('お名前'),
+            email: formData.get('メールアドレス'),
+            people: formData.get('人数'),
+            message: formData.get('メッセージ')
+        };
+
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
                 form.classList.add('hidden');
                 document.getElementById('booking-success').classList.remove('hidden');
+            } else {
+                alert('送信に失敗しました');
+            }
+        } catch (error) {
+            console.error(error);
+            alert('送信エラーが発生しました');
+        }
+    });
+}
             });
         }
 
