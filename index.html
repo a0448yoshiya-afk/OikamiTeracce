@@ -1,529 +1,521 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OikamiTerrace | テラスで過ごす豊かな余白</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&family=Noto+Serif+JP:wght@300;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-base: #ffffff;
-            --text-main: #111111;
-            --accent-color: #9a8466;
-            --sidebar-width: 280px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OikamiTerrace | テラスで過ごす豊かな余白</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&family=Noto+Serif+JP:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #ffffff;
+      --text-main: #111111;
+      --accent-color: #9a8466;
+      --sidebar-width: 280px;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            font-family: 'Inter', 'Noto Serif JP', serif;
-            background-color: var(--bg-base);
-            color: var(--text-main);
-            scroll-behavior: smooth;
-            -webkit-tap-highlight-color: transparent;
-            overflow-x: hidden;
-        }
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Noto Serif JP', serif;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
 
-        .calendar-sidebar {
-            width: var(--sidebar-width);
-            background: #fff;
-            border-right: 1px solid #f0f0f0;
-        }
+    .calendar-sidebar {
+      width: var(--sidebar-width);
+      background: #fff;
+      border-right: 1px solid #f0f0f0;
+    }
 
-        .open-day {
-            background-color: var(--accent-color);
-            color: white;
-            border-radius: 50%;
-            font-weight: bold;
-        }
+    .open-day {
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+    }
 
-        .nav-btn {
-            position: relative;
-            padding: 12px 8px;
-            cursor: pointer;
-            transition: color 0.3s;
-            white-space: nowrap;
-            z-index: 1001;
-            background: transparent;
-            border: none;
-            display: inline-block;
-            font: inherit;
-        }
+    .nav-btn {
+      position: relative;
+      padding: 12px 8px;
+      cursor: pointer;
+      transition: color 0.3s;
+      white-space: nowrap;
+      z-index: 1001;
+      background: transparent;
+      border: none;
+      display: inline-block;
+      font: inherit;
+    }
 
-        .nav-btn.active {
-            color: var(--accent-color);
-        }
+    .nav-btn.active {
+      color: var(--accent-color);
+    }
 
-        .nav-btn::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: 4px;
-            left: 8px;
-            background-color: var(--accent-color);
-            transition: width 0.3s;
-        }
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: 4px;
+      left: 8px;
+      background-color: var(--accent-color);
+      transition: width 0.3s;
+    }
 
-        .nav-btn.active::after {
-            width: calc(100% - 16px);
-        }
+    .nav-btn.active::after {
+      width: calc(100% - 16px);
+    }
 
-        .page-content {
-            display: none;
-            opacity: 0;
-        }
+    .page-content {
+      display: none;
+      opacity: 0;
+    }
 
-        .page-content.active {
-            display: block;
-            opacity: 1;
-            animation: fadeIn 0.5s ease forwards;
-        }
+    .page-content.active {
+      display: block;
+      opacity: 1;
+      animation: fadeIn 0.5s ease forwards;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-        .hero-slideshow {
-            position: relative;
-            width: 100%;
-            height: 85vh;
-            background: #1a1a1a;
-            overflow: hidden;
-            z-index: 1;
-        }
+    .hero-slideshow {
+      position: relative;
+      width: 100%;
+      height: 85vh;
+      background: #1a1a1a;
+      overflow: hidden;
+      z-index: 1;
+    }
 
-        .slide {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-            z-index: 1;
-        }
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      z-index: 1;
+    }
 
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .slide.active {
-            opacity: 0.6;
-            z-index: 2;
-        }
+    .slide.active {
+      opacity: 0.6;
+      z-index: 2;
+    }
 
-        .news-item {
-            border-left: 1px solid #eee;
-            padding-left: 1.5rem;
-        }
+    .news-item {
+      border-left: 1px solid #eee;
+      padding-left: 1.5rem;
+    }
 
-        .story-img {
-            width: 100%;
-            max-height: 500px;
-            object-fit: cover;
-            margin: 3rem 0;
-            filter: grayscale(0.2);
-        }
+    .story-img {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      margin: 3rem 0;
+      filter: grayscale(0.2);
+    }
 
-        .board-card {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            transition: transform 0.2s;
-        }
+    .board-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      transition: transform 0.2s;
+    }
 
-        .board-card:hover {
-            transform: translateY(-2px);
-        }
+    .board-card:hover {
+      transform: translateY(-2px);
+    }
 
-        .tag-cleaning {
-            background: #eff6ff;
-            color: #1e40af;
-        }
+    .tag-cleaning {
+      background: #eff6ff;
+      color: #1e40af;
+    }
 
-        .tag-workshop {
-            background: #f0fdf4;
-            color: #166534;
-        }
+    .tag-workshop {
+      background: #f0fdf4;
+      color: #166534;
+    }
 
-        .map-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-        }
+    .map-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
 
-        .map-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+    .map-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
 
-        .scrollbar-hide::-webkit-scrollbar {
-            display: none;
-        }
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
 
-        .scrollbar-hide {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
 <body class="flex flex-col lg:flex-row min-h-screen">
 
-    <aside class="calendar-sidebar hidden lg:flex flex-col p-10 shrink-0 sticky top-0 h-screen">
-        <div class="mb-16">
-            <h1 class="text-xl font-light tracking-tighter uppercase leading-none">OikamiTerrace</h1>
-        </div>
+  <aside class="calendar-sidebar hidden lg:flex flex-col p-10 shrink-0 sticky top-0 h-screen">
+    <div class="mb-16">
+      <h1 class="text-xl font-light tracking-tighter uppercase leading-none">OikamiTerrace</h1>
+    </div>
 
-        <div class="calendar-module">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-xs font-bold tracking-widest uppercase">2026.03</span>
+    <div class="calendar-module">
+      <div class="flex justify-between items-center mb-6">
+        <span class="text-xs font-bold tracking-widest uppercase">2026.03</span>
+      </div>
+      <div id="calendar-days" class="grid grid-cols-7 text-[11px] text-center gap-y-4">
+        <div class="text-[9px] text-gray-400 font-bold">S</div>
+        <div class="text-[9px] text-gray-400 font-bold">M</div>
+        <div class="text-[9px] text-gray-400 font-bold">T</div>
+        <div class="text-[9px] text-gray-400 font-bold">W</div>
+        <div class="text-[9px] text-gray-400 font-bold">T</div>
+        <div class="text-[9px] text-gray-400 font-bold">F</div>
+        <div class="text-[9px] text-gray-400 font-bold">S</div>
+      </div>
+      <div class="mt-10 flex items-center gap-3">
+        <div class="w-2 h-2 open-day"></div>
+        <span class="text-[9px] tracking-widest text-gray-400 uppercase">Open Every Tue.</span>
+      </div>
+    </div>
+
+    <div class="mt-auto">
+      <div class="text-xs text-stone-800 tracking-widest leading-relaxed mb-4 font-semibold">
+        <p class="text-sm mb-1">18:00 - 21:00</p>
+        <p>@OIKAMI TERRACE</p>
+      </div>
+      <a href="https://maps.app.goo.gl/6SmZio7gCUsZPQEq5" target="_blank" rel="noopener noreferrer" class="text-[10px] underline text-stone-500 hover:text-stone-800">Google Maps</a>
+    </div>
+  </aside>
+
+  <main class="flex-1 relative">
+    <nav class="h-16 md:h-20 flex items-center justify-between px-6 md:px-8 sticky top-0 bg-white/95 backdrop-blur-md border-b border-gray-100 lg:border-none" style="z-index: 2000;">
+      <div class="lg:hidden text-lg font-light tracking-tighter uppercase">OikamiTerrace</div>
+      <div class="flex space-x-2 md:space-x-4 text-[10px] tracking-[0.15em] uppercase font-semibold overflow-x-auto scrollbar-hide">
+        <button type="button" data-page="home" id="btn-home" class="nav-btn active">Home</button>
+        <button type="button" data-page="menu" id="btn-menu" class="nav-btn">Menu</button>
+        <button type="button" data-page="activity" id="btn-activity" class="nav-btn">Activity</button>
+        <button type="button" data-page="story" id="btn-story" class="nav-btn">Story</button>
+        <button type="button" data-page="reserve" id="btn-reserve" class="nav-btn">Reserve</button>
+      </div>
+    </nav>
+
+    <div id="page-home" class="page-content active">
+      <div class="hero-slideshow">
+        <div class="slide active"><img src="image.png" alt="Oikami Terrace View"></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1200" alt="Interior"></div>
+        <div class="slide"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=1200" alt="Details"></div>
+
+        <div class="absolute inset-0 flex items-center justify-center z-10 text-white text-center px-6 pointer-events-none">
+          <div>
+            <h2 class="text-3xl md:text-5xl font-light tracking-[0.3em] mb-6">テラスで過ごす<br>豊かな余白</h2>
+            <p class="text-[11px] md:text-sm tracking-[0.2em] opacity-80 leading-loose">
+              人吉の夜風を感じるテラスラウンジ。<br>
+              厳選した一皿と共に、日常の中に贅沢を。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <section class="px-8 py-20 max-w-5xl mx-auto border-b border-stone-100">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+          <div class="lg:col-span-2">
+            <h3 class="text-2xl font-light mb-8 tracking-widest uppercase text-stone-800">Lounge & Dining</h3>
+            <p class="text-gray-500 leading-loose text-sm mb-8">
+              OikamiTerraceは、ただの屋外テラスではありません。人吉の美しい夜空の下、道路をリビングのようなテラスに転換し、心身を整える「ラウンジ」としての場所を提供しています。<br><br>
+              人吉の最高の景色を一望できる場所。クラフトビールやホットワイン、そして手作りの温かな食事。それらはすべて、このテラスで過ごす「豊かな時間」を彩るための名脇役です。
+            </p>
+            <button type="button" data-page="menu" class="page-jump text-[10px] tracking-widest uppercase border-b border-black pb-1 hover:opacity-50 transition-opacity">
+              View Menu & Reservation
+            </button>
+          </div>
+
+          <div>
+            <h3 class="text-xs font-bold tracking-widest uppercase mb-8 border-b pb-2">Information</h3>
+            <div class="space-y-8">
+              <div class="news-item">
+                <span class="text-[10px] text-stone-400 block mb-1">2026.03.01</span>
+                <p class="text-xs leading-relaxed">3月のカレンダーを更新しました。火曜日はテラスでお待ちしています。</p>
+              </div>
             </div>
-            <div id="calendar-days" class="grid grid-cols-7 text-[11px] text-center gap-y-4">
-                <div class="text-[9px] text-gray-400 font-bold">S</div>
-                <div class="text-[9px] text-gray-400 font-bold">M</div>
-                <div class="text-[9px] text-gray-400 font-bold">T</div>
-                <div class="text-[9px] text-gray-400 font-bold">W</div>
-                <div class="text-[9px] text-gray-400 font-bold">T</div>
-                <div class="text-[9px] text-gray-400 font-bold">F</div>
-                <div class="text-[9px] text-gray-400 font-bold">S</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="px-8 py-20 max-w-5xl mx-auto">
+        <header class="mb-12">
+          <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Access</span>
+          <h2 class="text-3xl font-light tracking-widest">アクセス</h2>
+        </header>
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+          <div class="lg:col-span-2 space-y-6">
+            <div>
+              <p class="text-[10px] text-stone-400 uppercase tracking-widest mb-1">Location</p>
+              <p class="text-sm text-stone-800 leading-relaxed font-semibold">
+                〒868-0052<br>熊本県人吉市新町20-1<br>OIKAMI TERRACE
+              </p>
             </div>
-            <div class="mt-10 flex items-center gap-3">
-                <div class="w-2 h-2 open-day"></div>
-                <span class="text-[9px] tracking-widest text-gray-400 uppercase">Open Every Tue.</span>
+            <div>
+              <p class="text-[10px] text-stone-400 uppercase tracking-widest mb-1">Opening Hours</p>
+              <p class="text-sm text-stone-800">毎週火曜日 18:00 - 21:00</p>
             </div>
-        </div>
-
-        <div class="mt-auto">
-            <div class="text-xs text-stone-800 tracking-widest leading-relaxed mb-4 font-semibold">
-                <p class="text-sm mb-1">18:00 - 21:00</p>
-                <p>@OIKAMI TERRACE</p>
+            <div class="pt-4">
+              <a href="https://maps.app.goo.gl/6SmZio7gCUsZPQEq5" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest bg-stone-100 px-6 py-4 hover:bg-stone-200 transition-colors">
+                Google Maps で開く
+              </a>
             </div>
-            <a href="https://maps.app.goo.gl/6SmZio7gCUsZPQEq5" target="_blank" rel="noopener noreferrer" class="text-[10px] underline text-stone-500 hover:text-stone-800">Google Maps</a>
-        </div>
-    </aside>
-
-    <main class="flex-1 relative">
-        <nav class="h-16 md:h-20 flex items-center justify-between px-6 md:px-8 sticky top-0 bg-white/95 backdrop-blur-md border-b border-gray-100 lg:border-none" style="z-index: 2000;">
-            <div class="lg:hidden text-lg font-light tracking-tighter uppercase">OikamiTerrace</div>
-            <div class="flex space-x-2 md:space-x-4 text-[10px] tracking-[0.15em] uppercase font-semibold overflow-x-auto scrollbar-hide">
-                <button type="button" data-page="home" id="btn-home" class="nav-btn active">Home</button>
-                <button type="button" data-page="menu" id="btn-menu" class="nav-btn">Menu</button>
-                <button type="button" data-page="activity" id="btn-activity" class="nav-btn">Activity</button>
-                <button type="button" data-page="story" id="btn-story" class="nav-btn">Story</button>
-                <button type="button" data-page="reserve" id="btn-reserve" class="nav-btn">Reserve</button>
+          </div>
+          <div class="lg:col-span-3 border border-stone-100">
+            <div class="map-container grayscale contrast-[0.9]">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3378.7118029517177!2d130.7578270766115!3d32.21200901235472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x353f0190a61839c5%3A0xe781f1484803b879!2z44CSODY4LTAwNTIg54aK5pys55yM5Lq65ZCJ5biC5paw55S677yS77yQ4oiS77yR!5e0!3m2!1sja!2sjp!4v1710000000000!5m2!1sja!2sjp" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
-        </nav>
+          </div>
+        </div>
+      </section>
+    </div>
 
-        <div id="page-home" class="page-content active">
-            <div class="hero-slideshow">
-                <div class="slide active"><img src="image.png" alt="Oikami Terrace View"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=1200" alt="Interior"></div>
-                <div class="slide"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&q=80&w=1200" alt="Details"></div>
+    <div id="page-menu" class="page-content">
+      <section class="px-8 py-20 max-w-5xl mx-auto">
+        <header class="mb-20 text-center">
+          <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Selection</span>
+          <h2 class="text-4xl font-light tracking-widest">メニュー</h2>
+        </header>
+        <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 mb-32">
+          <div class="space-y-6">
+            <h4 class="text-xs font-bold tracking-widest uppercase border-b pb-2 mb-6 text-stone-800">Foods</h4>
+            <div class="flex justify-between items-baseline"><span class="text-sm">自家製キッシュ</span><span class="text-xs">¥1,000</span></div>
+            <div class="flex justify-between items-baseline"><span class="text-sm">ハム・チーズ盛り合わせ</span><span class="text-xs">¥1,200</span></div>
+          </div>
+          <div class="space-y-6">
+            <h4 class="text-xs font-bold tracking-widest uppercase border-b pb-2 mb-6 text-stone-800">Drinks</h4>
+            <div class="flex justify-between items-baseline"><span class="text-sm">クラフトホットワイン</span><span class="text-xs">¥700</span></div>
+            <div class="flex justify-between items-baseline"><span class="text-sm">クラフトビール</span><span class="text-xs">¥800</span></div>
+          </div>
+        </div>
+        <div class="bg-stone-50 border border-stone-100 overflow-hidden">
+          <div class="flex flex-col lg:flex-row">
+            <div class="lg:w-1/2 h-80 lg:h-auto overflow-hidden">
+              <img src="image.png" class="w-full h-full object-cover" alt="Terrace seat">
+            </div>
+            <div class="lg:w-1/2 p-10 lg:p-16">
+              <span class="text-[10px] tracking-[0.4em] text-accent-color uppercase block mb-6">Reservation</span>
+              <h3 class="text-2xl font-light mb-8 tracking-widest">上質なテラス席と、<br>特別な夜のひとときを。</h3>
+              <button type="button" data-page="reserve" class="page-jump bg-black text-white px-12 py-4 text-[11px] tracking-widest uppercase hover:opacity-80 transition-opacity">
+                予約フォームへ
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
 
-                <div class="absolute inset-0 flex items-center justify-center z-10 text-white text-center px-6 pointer-events-none">
-                    <div>
-                        <h2 class="text-3xl md:text-5xl font-light tracking-[0.3em] mb-6">テラスで過ごす<br>豊かな余白</h2>
-                        <p class="text-[11px] md:text-sm tracking-[0.2em] opacity-80 leading-loose">
-                            人吉の夜風を感じるテラスラウンジ。<br>
-                            厳選した一皿と共に、日常の中に贅沢を。
-                        </p>
-                    </div>
-                </div>
+    <div id="page-activity" class="page-content">
+      <section class="px-8 py-20 max-w-5xl mx-auto text-center">
+        <header class="mb-20">
+          <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Our Action</span>
+          <h2 class="text-4xl font-light tracking-widest">まちづくり活動</h2>
+        </header>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+          <div class="board-card p-6">
+            <span class="text-[9px] uppercase tracking-widest px-2 py-1 tag-cleaning">Cleaning</span>
+            <h4 class="text-sm font-semibold mt-4 mb-2">まちの早朝清掃</h4>
+            <p class="text-xs text-stone-500">毎週日曜、地域清掃を実施中。</p>
+          </div>
+          <div class="board-card p-6">
+            <span class="text-[9px] uppercase tracking-widest px-2 py-1 tag-workshop">Workshop</span>
+            <h4 class="text-sm font-semibold mt-4 mb-2">テラス活用会議</h4>
+            <p class="text-xs text-stone-500">地域住民との対話の場。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div id="page-story" class="page-content">
+      <section class="px-8 py-20 max-w-3xl mx-auto text-center">
+        <header class="mb-20">
+          <h2 class="text-4xl font-light tracking-widest">OikamiTerraceの物語</h2>
+        </header>
+        <div class="text-sm text-stone-700 space-y-12 leading-loose">
+          <p>人吉のシンボル、石垣と胸川。この素晴らしい景色を一望できる場所を「豊かな居場所」へ。</p>
+          <img src="image.png" class="story-img" alt="Landscape">
+          <p>私たちは、社会実験を重ね、人々の笑顔が集まる場所を目指しています。</p>
+        </div>
+      </section>
+    </div>
+
+    <div id="page-reserve" class="page-content">
+      <section class="px-8 py-20 max-w-2xl mx-auto">
+        <header class="mb-16 text-center">
+          <h2 class="text-4xl font-light tracking-widest">事前予約</h2>
+        </header>
+        <div class="bg-white p-10 border border-stone-100">
+          <form id="booking-form" class="space-y-6">
+            <div>
+              <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">お名前</label>
+              <input type="text" name="お名前" required class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
             </div>
 
-            <section class="px-8 py-20 max-w-5xl mx-auto border-b border-stone-100">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
-                    <div class="lg:col-span-2">
-                        <h3 class="text-2xl font-light mb-8 tracking-widest uppercase text-stone-800">Lounge & Dining</h3>
-                        <p class="text-gray-500 leading-loose text-sm mb-8">
-                            OikamiTerraceは、ただの屋外テラスではありません。人吉の美しい夜空の下、道路をリビングのようなテラスに転換し、心身を整える「ラウンジ」としての場所を提供しています。<br><br>
-                            人吉の最高の景色を一望できる場所。クラフトビールやホットワイン、そして手作りの温かな食事。それらはすべて、このテラスで過ごす「豊かな時間」を彩るための名脇役です。
-                        </p>
-                        <button type="button" data-page="menu" class="page-jump text-[10px] tracking-widest uppercase border-b border-black pb-1 hover:opacity-50 transition-opacity">
-                            View Menu & Reservation
-                        </button>
-                    </div>
+            <div>
+              <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メールアドレス</label>
+              <input type="email" name="メールアドレス" required class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
+            </div>
 
-                    <div>
-                        <h3 class="text-xs font-bold tracking-widest uppercase mb-8 border-b pb-2">Information</h3>
-                        <div class="space-y-8">
-                            <div class="news-item">
-                                <span class="text-[10px] text-stone-400 block mb-1">2026.03.01</span>
-                                <p class="text-xs leading-relaxed">3月のカレンダーを更新しました。火曜日はテラスでお待ちしています。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <div>
+              <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">人数</label>
+              <input type="number" name="人数" class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent">
+            </div>
 
-            <section class="px-8 py-20 max-w-5xl mx-auto">
-                <header class="mb-12">
-                    <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Access</span>
-                    <h2 class="text-3xl font-light tracking-widest">アクセス</h2>
-                </header>
-                <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
-                    <div class="lg:col-span-2 space-y-6">
-                        <div>
-                            <p class="text-[10px] text-stone-400 uppercase tracking-widest mb-1">Location</p>
-                            <p class="text-sm text-stone-800 leading-relaxed font-semibold">
-                                〒868-0052<br>熊本県人吉市新町20-1<br>OIKAMI TERRACE
-                            </p>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-stone-400 uppercase tracking-widest mb-1">Opening Hours</p>
-                            <p class="text-sm text-stone-800">毎週火曜日 18:00 - 21:00</p>
-                        </div>
-                        <div class="pt-4">
-                            <a href="https://maps.app.goo.gl/6SmZio7gCUsZPQEq5" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-[10px] uppercase tracking-widest bg-stone-100 px-6 py-4 hover:bg-stone-200 transition-colors">
-                                Google Maps で開く
-                            </a>
-                        </div>
-                    </div>
-                    <div class="lg:col-span-3 border border-stone-100">
-                        <div class="map-container grayscale contrast-[0.9]">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3378.7118029517177!2d130.7578270766115!3d32.21200901235472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x353f0190a61839c5%3A0xe781f1484803b879!2z44CSODY4LTAwNTIg54aK5pys55yM5Lq65ZCJ5biC5paw55S677yS77yQ4oiS77yR!5e0!3m2!1sja!2sjp!4v1710000000000!5m2!1sja!2sjp" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <div>
+              <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メッセージ</label>
+              <textarea name="メッセージ" rows="4" class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent"></textarea>
+            </div>
+
+            <button type="submit" id="submit-booking-btn" class="w-full bg-black text-white py-5 text-[10px] tracking-[0.3em] uppercase hover:bg-stone-800 transition-all">
+              予約メールを送信
+            </button>
+          </form>
+
+          <div id="booking-success" class="hidden text-center py-10">
+            <h4 class="text-lg font-light">送信完了しました</h4>
+          </div>
         </div>
+      </section>
+    </div>
 
-        <div id="page-menu" class="page-content">
-            <section class="px-8 py-20 max-w-5xl mx-auto">
-                <header class="mb-20 text-center">
-                    <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Selection</span>
-                    <h2 class="text-4xl font-light tracking-widest">メニュー</h2>
-                </header>
-                <div class="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 mb-32">
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-bold tracking-widest uppercase border-b pb-2 mb-6 text-stone-800">Foods</h4>
-                        <div class="flex justify-between items-baseline"><span class="text-sm">自家製キッシュ</span><span class="text-xs">¥1,000</span></div>
-                        <div class="flex justify-between items-baseline"><span class="text-sm">ハム・チーズ盛り合わせ</span><span class="text-xs">¥1,200</span></div>
-                    </div>
-                    <div class="space-y-6">
-                        <h4 class="text-xs font-bold tracking-widest uppercase border-b pb-2 mb-6 text-stone-800">Drinks</h4>
-                        <div class="flex justify-between items-baseline"><span class="text-sm">クラフトホットワイン</span><span class="text-xs">¥700</span></div>
-                        <div class="flex justify-between items-baseline"><span class="text-sm">クラフトビール</span><span class="text-xs">¥800</span></div>
-                    </div>
-                </div>
-                <div class="bg-stone-50 border border-stone-100 overflow-hidden">
-                    <div class="flex flex-col lg:flex-row">
-                        <div class="lg:w-1/2 h-80 lg:h-auto overflow-hidden">
-                            <img src="image.png" class="w-full h-full object-cover" alt="Terrace seat">
-                        </div>
-                        <div class="lg:w-1/2 p-10 lg:p-16">
-                            <span class="text-[10px] tracking-[0.4em] text-accent-color uppercase block mb-6">Reservation</span>
-                            <h3 class="text-2xl font-light mb-8 tracking-widest">上質なテラス席と、<br>特別な夜のひとときを。</h3>
-                            <button type="button" data-page="reserve" class="page-jump bg-black text-white px-12 py-4 text-[11px] tracking-widest uppercase hover:opacity-80 transition-opacity">
-                                予約フォームへ
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
+    <footer class="px-8 py-24 bg-stone-50 border-t border-stone-100 text-center">
+      <div class="text-[9px] text-stone-300 tracking-widest uppercase">&copy; 2026 OikamiTerrace</div>
+    </footer>
+  </main>
 
-        <div id="page-activity" class="page-content">
-            <section class="px-8 py-20 max-w-5xl mx-auto text-center">
-                <header class="mb-20">
-                    <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Our Action</span>
-                    <h2 class="text-4xl font-light tracking-widest">まちづくり活動</h2>
-                </header>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-                    <div class="board-card p-6">
-                        <span class="text-[9px] uppercase tracking-widest px-2 py-1 tag-cleaning">Cleaning</span>
-                        <h4 class="text-sm font-semibold mt-4 mb-2">まちの早朝清掃</h4>
-                        <p class="text-xs text-stone-500">毎週日曜、地域清掃を実施中。</p>
-                    </div>
-                    <div class="board-card p-6">
-                        <span class="text-[9px] uppercase tracking-widest px-2 py-1 tag-workshop">Workshop</span>
-                        <h4 class="text-sm font-semibold mt-4 mb-2">テラス活用会議</h4>
-                        <p class="text-xs text-stone-500">地域住民との対話の場。</p>
-                    </div>
-                </div>
-            </section>
-        </div>
+  <script>
+    const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec';
 
-        <div id="page-story" class="page-content">
-            <section class="px-8 py-20 max-w-3xl mx-auto text-center">
-                <header class="mb-20">
-                    <h2 class="text-4xl font-light tracking-widest">OikamiTerraceの物語</h2>
-                </header>
-                <div class="text-sm text-stone-700 space-y-12 leading-loose">
-                    <p>人吉のシンボル、石垣と胸川。この素晴らしい景色を一望できる場所を「豊かな居場所」へ。</p>
-                    <img src="image.png" class="story-img" alt="Landscape">
-                    <p>私たちは、社会実験を重ね、人々の笑顔が集まる場所を目指しています。</p>
-                </div>
-            </section>
-        </div>
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-content').forEach(function(page) {
+        page.classList.remove('active');
+      });
 
-        <div id="page-reserve" class="page-content">
-            <section class="px-8 py-20 max-w-2xl mx-auto">
-                <header class="mb-16 text-center">
-                    <h2 class="text-4xl font-light tracking-widest">事前予約</h2>
-                </header>
-                <div class="bg-white p-10 border border-stone-100">
-                    <form id="booking-form" class="space-y-6">
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">お名前</label>
-                            <input
-                                type="text"
-                                name="お名前"
-                                required
-                                class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent"
-                            >
-                        </div>
+      document.querySelectorAll('.nav-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+      });
 
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メールアドレス</label>
-                            <input
-                                type="email"
-                                name="メールアドレス"
-                                required
-                                class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent"
-                            >
-                        </div>
+      const targetPage = document.getElementById('page-' + pageId);
+      const targetBtn = document.getElementById('btn-' + pageId);
 
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">人数</label>
-                            <input
-                                type="number"
-                                name="人数"
-                                class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent"
-                            >
-                        </div>
+      if (targetPage) {
+        targetPage.classList.add('active');
+      }
 
-                        <div>
-                            <label class="block text-[10px] uppercase tracking-widest text-stone-400 mb-2">メッセージ</label>
-                            <textarea
-                                name="メッセージ"
-                                rows="4"
-                                class="w-full border-b border-stone-200 py-3 text-sm focus:outline-none focus:border-stone-800 bg-transparent"
-                            ></textarea>
-                        </div>
+      if (targetBtn) {
+        targetBtn.classList.add('active');
+      }
 
-                        <button
-                            type="submit"
-                            class="w-full bg-black text-white py-5 text-[10px] tracking-[0.3em] uppercase hover:bg-stone-800 transition-all"
-                        >
-                            予約メールを送信
-                        </button>
-                    </form>
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-                    <div id="booking-success" class="hidden text-center py-10">
-                        <h4 class="text-lg font-light">送信完了しました</h4>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <footer class="px-8 py-24 bg-stone-50 border-t border-stone-100 text-center">
-            <div class="text-[9px] text-stone-300 tracking-widest uppercase">&copy; 2026 OikamiTerrace</div>
-        </footer>
-    </main>
-
-    <script>
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-content').forEach(function (page) {
-                page.classList.remove('active');
-            });
-
-            document.querySelectorAll('.nav-btn').forEach(function (btn) {
-                btn.classList.remove('active');
-            });
-
-         var form = document.getElementById('booking-form');
-var successBox = document.getElementById('booking-success');
-
-if (form) {
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        var sendData = new URLSearchParams();
-        sendData.append('name', form.querySelector('[name="お名前"]').value);
-        sendData.append('email', form.querySelector('[name="メールアドレス"]').value);
-        sendData.append('people', form.querySelector('[name="人数"]').value);
-        sendData.append('message', form.querySelector('[name="メッセージ"]').value);
-
-        try {
-            await fetch('https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec', {
-                method: 'POST',
-                body: sendData,
-                mode: 'no-cors'
-            });
-
-            form.classList.add('hidden');
-            if (successBox) {
-                successBox.classList.remove('hidden');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('送信エラーが発生しました');
-        }
-    });
-}
-
-if (form) {
-    form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-
-        var sendData = new URLSearchParams();
-        sendData.append('name', form.querySelector('[name="お名前"]').value);
-        sendData.append('email', form.querySelector('[name="メールアドレス"]').value);
-        sendData.append('people', form.querySelector('[name="人数"]').value);
-        sendData.append('message', form.querySelector('[name="メッセージ"]').value);
-
-        try {
-            await fetch('https://script.google.com/macros/s/AKfycbzXIGe84GBYKLdVNBGNpebDHfjRBZQiwffw3-mbvEzMQLj1699TBqbwswfh1_jPtsRW/exec', {
-                method: 'POST',
-                body: sendData,
-                mode: 'no-cors'
-            });
-
-            form.classList.add('hidden');
-            if (successBox) {
-                successBox.classList.remove('hidden');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('送信エラーが発生しました');
-        }
-    });
-}
-
-            var container = document.getElementById('calendar-days');
-            if (container) {
-                var tuesdays = [3, 10, 17, 24, 31];
-                for (var day = 1; day <= 31; day++) {
-                    var dayEl = document.createElement('div');
-                    dayEl.textContent = day;
-                    dayEl.className = tuesdays.includes(day)
-                        ? 'w-5 h-5 flex items-center justify-center mx-auto open-day'
-                        : 'w-5 h-5 flex items-center justify-center mx-auto text-stone-300';
-                    container.appendChild(dayEl);
-                }
-            }
-
-            var slides = document.querySelectorAll('.slide');
-            if (slides.length > 1) {
-                var current = 0;
-                setInterval(function () {
-                    slides[current].classList.remove('active');
-                    current = (current + 1) % slides.length;
-                    slides[current].classList.add('active');
-                }, 5000);
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.nav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const pageId = this.dataset.page;
+          if (pageId) switchPage(pageId);
         });
-    </script>
+      });
+
+      document.querySelectorAll('.page-jump').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const pageId = this.dataset.page;
+          if (pageId) switchPage(pageId);
+        });
+      });
+
+      const form = document.getElementById('booking-form');
+      const successBox = document.getElementById('booking-success');
+      const submitBtn = document.getElementById('submit-booking-btn');
+
+      if (form) {
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          const sendData = new URLSearchParams();
+          sendData.append('name', form.querySelector('[name="お名前"]').value);
+          sendData.append('email', form.querySelector('[name="メールアドレス"]').value);
+          sendData.append('people', form.querySelector('[name="人数"]').value);
+          sendData.append('message', form.querySelector('[name="メッセージ"]').value);
+
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = '送信中...';
+          }
+
+          try {
+            await fetch(WEB_APP_URL, {
+              method: 'POST',
+              body: sendData,
+              mode: 'no-cors'
+            });
+
+            form.classList.add('hidden');
+            if (successBox) {
+              successBox.classList.remove('hidden');
+            }
+          } catch (error) {
+            console.error('送信エラー:', error);
+            alert('送信エラーが発生しました。時間をおいて再度お試しください。');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = '予約メールを送信';
+            }
+          }
+        });
+      }
+
+      const container = document.getElementById('calendar-days');
+      if (container) {
+        const tuesdays = [3, 10, 17, 24, 31];
+        for (let day = 1; day <= 31; day++) {
+          const dayEl = document.createElement('div');
+          dayEl.textContent = day;
+          dayEl.className = tuesdays.includes(day)
+            ? 'w-5 h-5 flex items-center justify-center mx-auto open-day'
+            : 'w-5 h-5 flex items-center justify-center mx-auto text-stone-300';
+          container.appendChild(dayEl);
+        }
+      }
+
+      const slides = document.querySelectorAll('.slide');
+      if (slides.length > 1) {
+        let current = 0;
+        setInterval(function () {
+          slides[current].classList.remove('active');
+          current = (current + 1) % slides.length;
+          slides[current].classList.add('active');
+        }, 5000);
+      }
+    });
+  </script>
 </body>
 </html>
