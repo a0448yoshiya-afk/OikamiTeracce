@@ -364,7 +364,46 @@
       text-align: center;
       line-height: 2;
     }
+    .blink-new {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.18rem 0.45rem;
+      margin-right: 0.45rem;
+      font-size: 9px;
+      line-height: 1;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: #d97706;
+      border-radius: 9999px;
+      animation: blinkNew 1.2s ease-in-out infinite;
+      vertical-align: middle;
+    }
 
+    @keyframes blinkNew {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .activity-feature-card {
+      background: #faf8f5;
+      border: 1px solid #eee8e1;
+    }
+
+    .flyer-frame {
+      background: #ffffff;
+      border: 1px solid #ece7e2;
+      overflow: hidden;
+    }
+
+    .flyer-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    
     @media (min-width: 768px) {
       .story-copy {
         max-width: 40em;
@@ -547,26 +586,38 @@
 
           <div>
             <h3 class="text-xs font-bold tracking-widest uppercase mb-8 border-b pb-2">お知らせ</h3>
-            <div class="space-y-8">
-              <div class="news-item">
-                <a href="javascript:void(0)" class="news-link internal-link" data-page="home" data-scroll="home-calendar-mobile">
-                  <span class="text-[10px] text-stone-400 block mb-1">2026.03.19</span>
-                  <p class="text-xs leading-relaxed">Oikami Terrace公式ホームページを開設しました。Oikami Terraceの最新情報をお届けしてまいります。</p>
-                </a>
-              </div>
-              <div class="news-item">
-                <a href="javascript:void(0)" class="news-link internal-link" data-page="home" data-scroll="home-calendar-mobile">
-                  <span class="text-[10px] text-stone-400 block mb-1">2026.03.19</span>
-                  <p class="text-xs leading-relaxed">4月のカレンダーを公開しました。春の夜風が心地よい季節です。</p>
-                </a>
-              </div>
-              <div class="news-item">
-                <a href="javascript:void(0)" class="news-link internal-link" data-page="activity" data-scroll="activity-archive">
-                  <span class="text-[10px] text-stone-400 block mb-1">2026.03.19</span>
-                  <p class="text-xs leading-relaxed">Oikami Terrace 活動アーカイブを公開しました。これまでの季節イベントや清掃活動の記録をご覧いただけます。</p>
-                </a>
-              </div>
-            </div>
+           <div class="space-y-8">
+  <div class="news-item">
+    <a href="javascript:void(0)" class="news-link internal-link" data-page="activity" data-scroll="flower-workshop">
+      <span class="text-[10px] text-stone-400 block mb-1">2026.03.20</span>
+      <p class="text-xs leading-relaxed">
+        <span class="blink-new">NEW</span>
+        3月22日（日）に花植えワークショップを開催します。春の彩りを一緒につくるお手伝い参加者を募集しています。
+      </p>
+    </a>
+  </div>
+
+  <div class="news-item">
+    <a href="javascript:void(0)" class="news-link internal-link" data-page="home" data-scroll="home-calendar-mobile">
+      <span class="text-[10px] text-stone-400 block mb-1">2026.03.19</span>
+      <p class="text-xs leading-relaxed">Oikami Terrace公式ホームページを開設しました。Oikami Terraceの最新情報をお届けしてまいります。</p>
+    </a>
+  </div>
+
+  <div class="news-item">
+    <a href="javascript:void(0)" class="news-link internal-link" data-page="home" data-scroll="home-calendar-mobile">
+      <span class="text-[10px] text-stone-400 block mb-1">2026.03.19</span>
+      <p class="text-xs leading-relaxed">4月のカレンダーを公開しました。春の夜風が心地よい季節です。</p>
+    </a>
+  </div>
+
+  <div class="news-item">
+    <a href="javascript:void(0)" class="news-link internal-link" data-page="activity" data-scroll="activity-archive">
+      <span class="text-[10px] text-stone-400 block mb-1">2026.03.19</span>
+      <p class="text-xs leading-relaxed">Oikami Terrace 活動アーカイブを公開しました。これまでの季節イベントや清掃活動の記録をご覧いただけます。</p>
+    </a>
+  </div>
+</div>
           </div>
         </div>
       </section>
@@ -738,6 +789,64 @@
             <span class="text-[9px] uppercase tracking-widest px-2 py-1 tag-workshop">Archive</span>
             <h4 class="text-sm font-semibold mt-4 mb-2">活動アーカイブ</h4>
             <p class="text-xs text-stone-500">これまでの取り組みを、過去の歩みとして記録に残しています。</p>
+          </div>
+        </div>
+      </section>
+
+            <section id="flower-workshop" class="px-8 py-20 max-w-5xl mx-auto border-b border-stone-100">
+        <div class="activity-feature-card p-8 md:p-10">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            <div>
+              <span class="text-xs tracking-[0.4em] text-accent-color uppercase mb-4 block">Workshop</span>
+              <h3 class="text-2xl md:text-3xl font-light tracking-widest text-stone-800 leading-relaxed mb-6">
+                花植えワークショップ開催
+              </h3>
+
+              <div class="space-y-4 text-sm text-stone-600 leading-loose">
+                <p>
+                  Oikami Terrace に、春の彩りを添えます🌺
+                </p>
+                <p>
+                  くまもと緑・景観協働機構様の「花いっぱい運動」のご支援により、マーガレットやマリーゴールドの苗、グラジオラスの球根をいただきました。
+                </p>
+                <p>
+                  この花たちを胸川沿いの道路に植えて、素敵な風景をつくります。
+                </p>
+                <p>
+                  お手伝いしてくださる方を募集しています。一緒に花を植えながら、少しの時間でもお気軽にご参加いただけたら嬉しいです。
+                </p>
+                <p>
+                  また、この取り組みをお知り合いの方へお声掛けいただけると、とても嬉しいです。
+                </p>
+                <p>
+                  一緒に、心地よいまちの景色をつくってみませんか？
+                </p>
+              </div>
+
+              <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-stone-700">
+                <div class="bg-white border border-stone-200 p-4">
+                  <p class="text-[10px] uppercase tracking-[0.25em] text-stone-400 mb-2">Date</p>
+                  <p class="font-semibold">令和8年3月22日（日）</p>
+                  <p>14:30〜16:00</p>
+                </div>
+                <div class="bg-white border border-stone-200 p-4">
+                  <p class="text-[10px] uppercase tracking-[0.25em] text-stone-400 mb-2">Place</p>
+                  <p class="font-semibold">老神パスタ専門店 御麺 前</p>
+                  <p>（胸川沿い道路）</p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flyer-frame">
+                <img src="flower-workshop-flyer.jpg" alt="花植えワークショップ案内チラシ" />
+              </div>
+              <p class="text-[11px] text-stone-400 leading-loose mt-4">
+                ※ こちらに案内チラシ画像を掲載予定です。画像ファイル名を
+                <span class="text-stone-600">flower-workshop-flyer.jpg</span>
+                にすると、そのまま差し替えできます。
+              </p>
+            </div>
           </div>
         </div>
       </section>
